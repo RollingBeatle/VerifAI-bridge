@@ -4,7 +4,8 @@ import time
 
 from dotmap import DotMap
 import progressbar
-
+import socket
+import time
 try:
     import ray
 except ModuleNotFoundError:
@@ -47,10 +48,14 @@ class ScenicServer(Server):
         self.maxSteps = defaults.maxSteps
         self.verbosity = defaults.verbosity
         self.maxIterations = defaults.maxIterations
+        self.connection = None
         if defaults.simulator is None:
             self.simulator = self.sampler.scenario.getSimulator()
         else:
             self.simulator = defaults.simulator
+        autoware = True
+        if autoware:
+            self.stack_socket()
 
     def evaluate_sample(self, sample):
         scene = self.sampler.lastScene
@@ -69,7 +74,7 @@ class ScenicServer(Server):
         try:
             result = self.simulator.simulate(scene,
                 maxSteps=self.maxSteps, verbosity=self.verbosity,
-                maxIterations=self.maxIterations)
+                maxIterations=self.maxIterations, main_socket=self.connection)
         except SimulationCreationError as e:
             if self.verbosity >= 1:
                 print(f'  Failed to create simulation: {e}')
@@ -81,6 +86,23 @@ class ScenicServer(Server):
 
     def terminate(self):
         pass
+    def stack_socket(self):
+        sck = socket.socket()
+        self.connection = sck
+        host_ip = "127.0.0.1"
+        port = 12345
+        VERIFAI_MASTER = "VERIFAI_MASTER"
+        role = VERIFAI_MASTER
+        id = 'nil'
+        role_id = role + ";" + id
+        self.connection.connect((host_ip, port))
+        self.connection.recv(1024)
+
+        print(role_id)
+        self.connection.send(role_id.encode())
+        self.connection.recv(1024) # Wait for a continue message
+        
+        time.sleep(1)
 
 class DummySampler(VerifaiSampler):
 

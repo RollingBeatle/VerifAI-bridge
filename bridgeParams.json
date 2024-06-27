@@ -1,0 +1,19 @@
+{
+    "HOST": "127.0.0.1",
+    "PORT": 12345,
+    "N_CLIENTS": 3,
+    "CLIENTS": {
+      "VERIFAI_INTSTANCE": "VERIFAI",
+      "VERIFAI_MASTER": "VERIFAI_MASTER"
+    },
+    "STATES": {
+      "CONTINUE": "CONTINUE",
+      "FINISHED": "finished_sim",
+      "WAITING_FOR_DATA": "waiting_data",
+      "FINISHED_ITER": "iter_end",
+      "ASK_FINISH": "ASK_FINISH",
+      "RUN_SIMULATION": "RUN_SIMULATION",
+      "STOP_SIMULATION": "STOP_SIMULATION",
+      "SLAVE": "AUTOWARE_SLAVE"
+    }
+  }

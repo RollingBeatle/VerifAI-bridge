@@ -24,7 +24,7 @@ behavior CrossingCarBehavior(trajectory):
     terminate
 
 # Find all 4-way intersections and set up trajectories for each vehicle.
-fourWayIntersection = filter(lambda i: i.is4Way, network.intersections)
+fourWayIntersection = filter(lambda i: i.is4Way, *network.intersections)
 intersec = Uniform(*fourWayIntersection)
 rightLanes = filter(lambda lane: all([section._laneToRight is None for section in lane.sections]), intersec.incomingLanes)
 startLane = Uniform(*rightLanes)
