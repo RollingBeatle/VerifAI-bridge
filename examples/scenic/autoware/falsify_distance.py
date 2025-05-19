@@ -1,7 +1,7 @@
 import math
 import os.path
 import sys
-
+import threading
 from dotmap import DotMap
 
 from verifai.samplers import ScenicSampler
@@ -10,6 +10,7 @@ from verifai.falsifier import generic_falsifier
 from verifai.monitor import specification_monitor, mtl_specification
 
 import socket
+import synch-bridge
 
 # Load the Scenic scenario and create a sampler from it
 if len(sys.argv) > 1:
@@ -63,7 +64,10 @@ falsifier = generic_falsifier(sampler=sampler,
                               monitor=MyMonitor(),
                               falsifier_params=falsifier_params,
                               server_class=ScenicServer,
-                              server_options=server_options) # TODO: read param from a json file
+                              server_options=server_options) 
+# Start the bridge in a separate thread
+t_bridge = threading.Thread(target=synch_bridge.main, name='bridge')
+t_bridge.start()
 
 falsifier.run_falsifier()
 print('Error table:')
