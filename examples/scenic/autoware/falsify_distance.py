@@ -53,11 +53,12 @@ falsifier_params = DotMap(
     # error_table_path='error_table.csv',
     # safe_table_path='safe_table.csv'
 )
-server_options = DotMap(maxSteps=250, verbosity=0)
+
+use_autoware = sampler.scenario.params.get('use_autoware', True)
+server_options = DotMap(maxSteps=250, verbosity=0, autoware=use_autoware)
 
 
-use_autoware = sampler.scenario.params.get('use_autoware', False)
-sck = None
+
 falsifier = generic_falsifier(sampler=sampler,
                               monitor=MyMonitor(),
                               falsifier_params=falsifier_params,

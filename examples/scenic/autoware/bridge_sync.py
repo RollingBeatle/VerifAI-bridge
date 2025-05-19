@@ -4,30 +4,32 @@ import time
 import scenic.simulators.carla.utils.utils as utils
 import socket
 import pickle
+import json
 
-sync_port = 12345 # TODO: move this to a config/json file
-ip = '127.0.0.1'
-VERIFAI = "VERIFAI"
-WAITING_FOR_DATA = 'waiting_data'
-CONTINUE = 'continue'
-FINISHED_ITER = 'iter_end'
-STOP_SIMULATION = 'STOP_SIMULATION'
-ASK_FINISH = "ASK_FINISH"
+params = json.load(open('parameters.json'))
+sync_port = 12345 
+# ip = '127.0.0.1'
+# VERIFAI = "VERIFAI"
+# WAITING_FOR_DATA = 'waiting_data'
+# CONTINUE = 'continue'
+# FINISHED_ITER = 'iter_end'
+# STOP_SIMULATION = 'STOP_SIMULATION'
+# ASK_FINISH = "ASK_FINISH"
 class AutowareControl():
     def __init__(self, set_point, id:str) -> None:
         '''
         The init should send the setpoint to autoware.
         See word file to define the messge
         '''
-        
+
         sock = socket.socket()
         print("connecting to socket")
-        sock.connect((ip, sync_port))
+        sock.connect((params['ip'], params['sync_port']))
         print("waiting for message")
         mssg = sock.recv(1024)
         print("recieved message")
         self.socket = sock
-        self.role = VERIFAI
+        self.role = params["VERIFAI"]
         self.id = id
 
         init_mssg = self.role + ';' + self.id

@@ -43,7 +43,7 @@ class ScenicServer(Server):
             self.rejectionFeedback = extSampler.rejectionFeedback
         self.monitor = monitor
         self.lastValue = None
-        defaults = DotMap(maxSteps=None, verbosity=0, maxIterations=1, simulator=None)
+        defaults = DotMap(maxSteps=None, verbosity=0, maxIterations=1, simulator=None, autoware=False)
         defaults.update(options)
         self.maxSteps = defaults.maxSteps
         self.verbosity = defaults.verbosity
@@ -53,8 +53,7 @@ class ScenicServer(Server):
             self.simulator = self.sampler.scenario.getSimulator()
         else:
             self.simulator = defaults.simulator
-        autoware = True
-        if autoware:
+        if defaults.autoware:
             self.stack_socket()
 
     def evaluate_sample(self, sample):
@@ -86,6 +85,7 @@ class ScenicServer(Server):
 
     def terminate(self):
         pass
+
     def stack_socket(self):
         sck = socket.socket()
         self.connection = sck

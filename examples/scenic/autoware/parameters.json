@@ -1,0 +1,10 @@
+{
+    "sync_port": 12345,
+    "ip": "127.0.0.1",
+    "VERIFAI": "VERIFAI",
+    "WAITING_FOR_DATA": "waiting_data",
+    "CONTINUE": "continue",
+    "FINISHED_ITER": "iter_end",
+    "STOP_SIMULATION": "STOP_SISTOP_SIMULATION",
+    "ASK_FINISH": "ASK_FINISH"
+}
